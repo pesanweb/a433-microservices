@@ -1,7 +1,10 @@
 version: '3.7'
 services:
+#service untuk mongo-db
   item-db:
+  #nama image dasar
     image: mongo:3
+    #mengatur agar selalu mulai ulang bila berhenti
     restart: always
     # ports:
       # - 27017
@@ -9,12 +12,17 @@ services:
       - app-db:/data/db
 
   item-app:
+  #mengunduh image dari dockerhub
     image: wildanh/item-app:v1
-    # command: npm install --production --unsafe-perm | npm run build
+    # dependon agar item-app baru dijalankan setelah item-db sudah berjalan
     depends_on:
       - item-db
+    #mengatur kebijakan restart
     restart: always
+    #mengatur port server
     ports:
       - '80:8080'
+#untuk membuat volume/penyimpanan, data agar tidak hilang ketika mulai ulang
 volumes:
+#membuat volume dengan nama app-db
   app-db:
